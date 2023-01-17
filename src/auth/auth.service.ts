@@ -20,9 +20,10 @@ export class AuthService {
         return this.sign(user);
       }
     
-      async login(payload: LoginDto): Promise<LoginResponse> {
+      async login(payload: LoginDto): Promise<UserEntity> {
         const user: UserEntity = await this.userService.loginUser(payload);
-        return this.sign(user);
+        const email = payload.email;
+        return this.userService.getUserByEmail(email);
       }
     
       sign(user: UserEntity): LoginResponse {
