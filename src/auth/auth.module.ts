@@ -6,9 +6,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
+import { UserService } from 'src/user/user.service';
+import { MatchService } from 'src/match/match.service';
+import { MatchModule } from 'src/match/match.module';
 
 @Module({
-  imports:[UserModule,
+  imports:[UserModule,MatchModule,
     PassportModule.register({defaultStrategy:'jwt'}),
     JwtModule.register(
       {
@@ -16,7 +19,7 @@ import { JwtStrategy } from './jwt.strategy';
         signOptions: { expiresIn: '1h' }
       },
     )],
-  providers: [JwtStrategy,AuthService],
+  providers: [JwtStrategy,AuthService, UserService, MatchService],
   exports: [JwtModule],
   controllers: [AuthController]
 })

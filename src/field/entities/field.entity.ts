@@ -1,4 +1,5 @@
-import { Column, Double, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { MatchEntity } from "src/match/entities/match.entity";
+import { Column, Double, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class FieldEntity {
@@ -22,4 +23,8 @@ export class FieldEntity {
 
     @Column()
     capacity: number;
+
+   
+    @OneToMany(() => MatchEntity, match => match.field)
+    matches: MatchEntity[];
 }

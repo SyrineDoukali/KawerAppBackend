@@ -17,7 +17,7 @@ export class FieldService {
     }
 
     async addField(filed: AddFieldDto){
-        return await this.fieldRepository.create(filed);
+        return await this.fieldRepository.save(filed);
 
     }
 

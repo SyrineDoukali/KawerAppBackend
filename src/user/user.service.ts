@@ -29,9 +29,9 @@ export class UserService {
         if (user) {
             throw new ConflictException('User already exists !');
         }
-
-        userDto.password = await bcrypt.hash(userDto.password);
-        return await this.userRepository.save(user);
+        const salt = await bcrypt.genSalt();
+        userDto.password = await bcrypt.hash(userDto.password, salt);
+        return await this.userRepository.save(userDto);
 
     }
     

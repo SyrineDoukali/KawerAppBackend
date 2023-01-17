@@ -1,5 +1,6 @@
 import { FieldEntity } from "src/field/entities/field.entity";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class MatchEntity {
@@ -13,7 +14,11 @@ export class MatchEntity {
     @Column()
     finish: Date;
 
-    @Column()
+
+    @ManyToOne(() => FieldEntity, field => field.matches)
     field: FieldEntity;
+
+    @ManyToOne(() => UserEntity, user => user.matches)
+    user: UserEntity;
     
 }

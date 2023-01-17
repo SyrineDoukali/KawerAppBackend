@@ -1,6 +1,6 @@
 import { MinLength } from "class-validator";
 import { MatchEntity } from "src/match/entities/match.entity";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class UserEntity {
@@ -24,6 +24,6 @@ export class UserEntity {
     @Column()
     phonenumber: string;
 
-    @Column()
+    @OneToMany(() => MatchEntity, match => match.user)
     matches: MatchEntity[];
 }
