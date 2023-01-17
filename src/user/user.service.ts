@@ -68,7 +68,6 @@ export class UserService {
         throw new NotFoundException(' User does not exists')
       }
       const match = {...matchdto, user}
-      console.log(match);
       const reserved = await this.matchService.addMatch(match);
       
 
