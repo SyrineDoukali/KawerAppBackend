@@ -24,6 +24,7 @@ export class UserEntity {
     @Column()
     phonenumber: string;
 
-    @OneToMany(() => MatchEntity, match => match.user)
+    @OneToMany(type => MatchEntity,
+        (match: UserEntity) => match.id)
     matches: MatchEntity[];
 }

@@ -20,7 +20,7 @@ export class FieldController {
     return await this.fieldService.addField(addfield);
   }
   
-  @Put()
+  @Put(':id')
   async updatefiled(
     @Param('id') id: string,
     @Body() updatefielddto: UpdateFieldDto

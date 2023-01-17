@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { AddMatchDto } from './dto/add-match-dto';
+import { ReserveMatchDto } from './dto/reserve-match-dto';
 import { MatchEntity } from './entities/match.entity';
 
 @Injectable()
@@ -15,15 +17,25 @@ export class MatchService {
     async getMatchs(): Promise<MatchEntity[]>{
         return await this.matchRepository.find();
     }
+    
+    async getmacthesByUser(id: string): Promise<MatchEntity[]>{
+        return await this.matchRepository.find({
+            relations: {
+                user: true,
+            },
+            where: {
+                user: {
+                    id: id
+                },
+            },
+        })
+    } 
 
-    async addMatch(match: AddMatchDto){
+    async addMatch(match: ReserveMatchDto){
         return await this.matchRepository.save(match);
 
     }
 
-    // async updateMatch(id: string, updateMatch: UpdateMatchDto) {
-    //     return await this.matchRepository.update(id, updateMatch);
-    // }
     
     async deleteMatch(id: string){
         return await this.matchRepository.delete(id)

@@ -22,13 +22,13 @@ export class UserController {
       return this.userService.getUserById(id)
     }
     
-    @Get('/matches:id')
+    @Get(':id/matches')
     async getmatches(
         @Param('id') id: string
     ){
         return this.userService.getmatches(id);
     }
-    @Put('/reserve')
+    @Put(':id/reserve')
     async reserveMatch(
         @Param('id') id: string,
         @Body() match: AddMatchDto

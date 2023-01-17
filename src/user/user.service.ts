@@ -51,13 +51,18 @@ export class UserService {
       return user.matches;
     }
 
+
     async reserveMatch (id: string, matchdto: AddMatchDto){
-        const match = await this.matchService.addMatch(matchdto);
+        
+        
         const user = await this.userRepository.findOne({where: {id: id}});
       if (!user){
         throw new NotFoundException(' User does not exists')
       }
-      user.matches.push(match);
+      const match = {...matchdto, user}
+      console.log(match);
+      const reserved = await this.matchService.addMatch(match);
+      
 
     }
     async updateUser(id: string, updateUser: UpdateUserDto) {

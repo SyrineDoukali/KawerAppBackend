@@ -12,7 +12,12 @@ export class MatchController {
     async getmatchs(): Promise<MatchEntity[]>{
         return await this.matchService.getMatchs();
     }
-
+    @Get('user/:id')
+    async getMatchesByUser(
+        @Param('id') id : string
+    ){
+        return await this.matchService.getmacthesByUser(id);
+    }
     @Delete()
     async deletematch(
         @Param('id') id: string

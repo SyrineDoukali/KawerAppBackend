@@ -15,7 +15,7 @@ export class FieldEntity {
     @Column()
     price: number;
 
-    @Column()
+    @Column({default: 90})
     duratingInMinutes: number;
 
     @Column()
