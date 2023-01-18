@@ -20,7 +20,7 @@ export class UserController {
         @Param('id') id: string
     ): Promise<Partial<UserEntity>> {
       return this.userService.getUserById(id)
-    }
+    }  
     
     @Get(':id/matches')
     async getmatches(
