@@ -18,7 +18,7 @@ export class MatchController {
     ){
         return await this.matchService.getmacthesByUser(id);
     }
-    @Delete()
+    @Delete('/:id')
     async deletematch(
         @Param('id') id: string
     ){
