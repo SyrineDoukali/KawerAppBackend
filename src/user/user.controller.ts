@@ -1,7 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { UserPayload } from 'src/auth/interfaces/user.payload';
 import { AddMatchDto } from 'src/match/dto/add-match-dto';
+import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { Roles } from 'src/shared/decorators/roles.decorator';
+import { RolesGuard } from 'src/shared/guards/roles.guards';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { UserEntity } from './entities/user.entity';
+import { RolesEnum } from './enums/user-role.enum';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -11,43 +16,53 @@ export class UserController {
     ){}
 
     @Get()
+    @Roles(RolesEnum.ADMIN)
+    @UseGuards(RolesGuard)
     async getusers(): Promise<UserEntity[]>{
         return await this.userService.getUsers();
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN)
+    @UseGuards(RolesGuard)
     async getuserByID(
-        @Param('id') id: string
+        @GetUser() user: UserPayload
     ): Promise<Partial<UserEntity>> {
-      return this.userService.getUserById(id)
-    }  
+      return this.userService.getUserById(user.id)
+    }
     
     @Get(':id/matches')
     async getmatches(
-        @Param('id') id: string
+        @GetUser() user: UserPayload
     ){
-        return this.userService.getmatches(id);
+        return this.userService.getmatches(user.id);
     }
+    @Roles(RolesEnum.ADMIN,RolesEnum.USER)
+    @UseGuards(RolesGuard)
     @Put(':id/reserve')
     async reserveMatch(
-        @Param('id') id: string,
+        @GetUser() user: UserPayload,
         @Body() match: AddMatchDto
     ){
-       return await this.userService.reserveMatch(id,match);
+       return await this.userService.reserveMatch(user.id,match);
     }
 
     @Put()
+    @Roles(RolesEnum.ADMIN,RolesEnum.USER)
+    @UseGuards(RolesGuard)
     async updateuser(
-        @Param('id') id: string,
+        @GetUser() user: UserPayload,
         @Body() updateuser: UpdateUserDto
     ){
-       return this.userService.updateUser(id, updateuser)
+       return this.userService.updateUser(user.id, updateuser)
     }
 
     @Delete()
+    @Roles(RolesEnum.ADMIN)
+    @UseGuards(RolesGuard)
     async deleteuser( 
-        @Param('id') id: string
+        @GetUser() user: UserPayload
     ){
-        return await this.userService.deleteUser(id)
+        return await this.userService.deleteUser(user.id)
     }
 }

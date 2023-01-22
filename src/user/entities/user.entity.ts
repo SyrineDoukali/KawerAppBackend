@@ -1,6 +1,7 @@
 import { MinLength } from "class-validator";
 import { MatchEntity } from "src/match/entities/match.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { RolesEnum } from "../enums/user-role.enum";
 
 @Entity()
 export class UserEntity {
@@ -23,6 +24,9 @@ export class UserEntity {
 
     @Column()
     phonenumber: string;
+
+    @Column({ enum: RolesEnum, default: RolesEnum.USER })
+    role: RolesEnum;
 
     @OneToMany(type => MatchEntity,
         (match: UserEntity) => match.id)
