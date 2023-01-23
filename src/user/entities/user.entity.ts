@@ -25,6 +25,9 @@ export class UserEntity {
     @Column()
     phonenumber: string;
 
+    @Column()
+    verifiedEmail: boolean;
+
     @Column({ enum: RolesEnum, default: RolesEnum.USER })
     role: RolesEnum;
 

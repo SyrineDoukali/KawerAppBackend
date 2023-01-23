@@ -18,5 +18,8 @@ export class UpdateFieldDto {
 
     @IsOptional()
     capacity: number;
+
+    @IsOptional()
+    availableTimeSlots: Date[];
 }
 

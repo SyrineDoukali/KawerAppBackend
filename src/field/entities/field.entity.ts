@@ -24,6 +24,9 @@ export class FieldEntity {
     @Column()
     capacity: number;
 
+    @Column()
+    availableTimeslots: Date[];
+
    
     @OneToMany(() => MatchEntity, match => match.field)
     matches: MatchEntity[];

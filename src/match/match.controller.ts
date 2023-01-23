@@ -19,7 +19,7 @@ export class MatchController {
     async getmatchs(): Promise<MatchEntity[]>{
         return await this.matchService.getMatchs();
     }
-    @Get('user/:id')
+    @Get('user')
     @Roles(RolesEnum.ADMIN,RolesEnum.USER)
     @UseGuards(RolesGuard)
     async getMatchesByUser(
@@ -27,7 +27,7 @@ export class MatchController {
     ){
         return await this.matchService.getmacthesByUser(user.id);
     }
-    @Delete()
+    @Delete(':id')
     @Roles(RolesEnum.ADMIN,RolesEnum.OWNER)
     @UseGuards(RolesGuard)
     async deletematch(

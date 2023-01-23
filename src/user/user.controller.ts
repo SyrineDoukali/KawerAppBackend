@@ -22,7 +22,7 @@ export class UserController {
         return await this.userService.getUsers();
     }
 
-    @Get(':id')
+    @Get('user')
     @Roles(RolesEnum.ADMIN)
     @UseGuards(RolesGuard)
     async getuserByID(
@@ -31,15 +31,18 @@ export class UserController {
       return this.userService.getUserById(user.id)
     }
     
-    @Get(':id/matches')
+    @Roles(RolesEnum.ADMIN, RolesEnum.USER)
+    @UseGuards(RolesGuard)
+    @Get('matches')
     async getmatches(
         @GetUser() user: UserPayload
     ){
         return this.userService.getmatches(user.id);
     }
+
     @Roles(RolesEnum.ADMIN,RolesEnum.USER)
     @UseGuards(RolesGuard)
-    @Put(':id/reserve')
+    @Put('reserve')
     async reserveMatch(
         @GetUser() user: UserPayload,
         @Body() match: AddMatchDto

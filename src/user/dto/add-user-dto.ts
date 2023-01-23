@@ -1,4 +1,5 @@
 import { IsNotEmpty } from "class-validator";
+import { RolesEnum } from "../enums/user-role.enum";
 
 export class AddUserDto {
 
@@ -16,5 +17,8 @@ export class AddUserDto {
 
     @IsNotEmpty()
     phonenumber: string;
+
+    @IsNotEmpty()
+    role: RolesEnum;
 
 }

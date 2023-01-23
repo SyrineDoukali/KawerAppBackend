@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AddMatchDto } from 'src/match/dto/add-match-dto';
 import { MatchEntity } from 'src/match/entities/match.entity';
@@ -9,13 +9,18 @@ import { LoginDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { UserEntity } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
+import { ConfirmationTokenEntity } from './entities/confirmation-token.entity';
+import { RolesEnum } from './enums/user-role.enum';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(UserEntity)
         private userRepository : Repository<UserEntity>,
-        private matchService: MatchService
+        private matchService: MatchService,
+        @InjectRepository(ConfirmationTokenEntity)
+        private confirmationToken: Repository<ConfirmationTokenEntity>
     ){}
     
 
@@ -99,5 +104,38 @@ export class UserService {
           throw new UnauthorizedException( ' wrong passsword')
         }
         return user;
+    }
+  
+    async createConfirmationToken(user: UserEntity): Promise<ConfirmationTokenEntity> {
+      const token = this.confirmationToken.create();
+      token.user = user;
+      token.token = crypto.randomBytes(32).toString('hex');
+      const savedToken = await token.save();
+      return savedToken;
+    }
+  
+    async confirmUserEmail(tkn: string): Promise<void> {
+      const token = await this.confirmationToken.findOne({ where: {token: tkn }});
+      if (!token) {
+        throw new BadRequestException();
       }
+      if (token.user.role == RolesEnum.USER) {
+        await this.userRepository.update(
+          { email: token.user.email },
+          {
+            verifiedEmail: true,
+          },
+        );
+      } else {
+        await this.userRepository.update(
+          { email: token.user.email },
+          {
+            verifiedEmail: true,
+          },
+        );
+      }
+      await token.delete();
+    }
+
+
 }

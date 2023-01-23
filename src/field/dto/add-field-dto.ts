@@ -18,4 +18,8 @@ export class AddFieldDto {
 
     @IsNotEmpty()
     capacity: number;
+    
+    @IsNotEmpty()
+    availableTimeSlots: Date[];
+
 }

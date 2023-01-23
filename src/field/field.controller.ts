@@ -37,7 +37,7 @@ export class FieldController {
     return this.fieldService.updateField(id, updatefielddto);
   }
 
-  @Delete()
+  @Delete(':id')
   @Roles(RolesEnum.ADMIN,RolesEnum.OWNER)
   @UseGuards(RolesGuard)
   async deletefield(@Param('id') id : string) {
