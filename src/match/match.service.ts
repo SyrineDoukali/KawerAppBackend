@@ -22,6 +22,7 @@ export class MatchService {
         return await this.matchRepository.find({
             relations: {
                 user: true,
+                field: true,
             },
             where: {
                 user: {
